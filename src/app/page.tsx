@@ -86,11 +86,6 @@ export default function Home() {
 
         if (error.code === '23505') { // Postgres unique constraint error code
           setFormStatus({ message: "You're already on our waitlist!", isSuccess: true });
-        } else if (error.code === '42P01') {
-          // Table doesn't exist
-          setFormStatus({ message: "Configuration error: Waitlist table not found", isSuccess: false });
-        } else if (error.message.includes('permission denied')) {
-          setFormStatus({ message: "Configuration error: Permission denied", isSuccess: false });
         } else {
           setFormStatus({
             message: `Error: ${error.message || "Something went wrong. Please try again later."}`,
@@ -145,18 +140,10 @@ export default function Home() {
 
       if (error) {
         console.error('Supabase Error:', error);
-
-        if (error.code === '42P01') {
-          // Table doesn't exist
-          setContactFormStatus({ message: "Configuration error: Contact table not found", isSuccess: false });
-        } else if (error.message.includes('permission denied')) {
-          setContactFormStatus({ message: "Configuration error: Permission denied", isSuccess: false });
-        } else {
-          setContactFormStatus({
-            message: `Error: ${error.message || "Something went wrong. Please try again later."}`,
-            isSuccess: false
-          });
-        }
+        setContactFormStatus({
+          message: `Error: ${error.message || "Something went wrong. Please try again later."}`,
+          isSuccess: false
+        });
       } else {
         setContactFormStatus({ message: "Thank you for your message! We'll get back to you soon.", isSuccess: true });
         // Clear form on success
