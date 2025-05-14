@@ -2,11 +2,14 @@
 
 import "./globals.css";
 import Image from "next/image";
-import { Leaf, Map, Compass, Backpack, Trophy, ArrowRight, Send, Sparkles } from "lucide-react";
-import { useEffect } from "react";
+import { Leaf, Map, Compass, Backpack, Trophy, ArrowRight, Send, Sparkles, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { ThemeToggle } from "../components/ThemeToggle";
 
 export default function Home() {
+  // Add state for mobile drawer
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
   const features = [
     {
       icon: <Map className="w-7 h-7" />,
@@ -62,6 +65,9 @@ export default function Home() {
         top: element.offsetTop - 80, // Offset for the sticky header
         behavior: 'smooth'
       });
+
+      // Close drawer if open (for mobile)
+      setIsDrawerOpen(false);
     }
   };
 
@@ -87,12 +93,94 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    if (isDrawerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isDrawerOpen]);
+
   return (
     <main className="min-h-screen bg-[#FCFCFC] dark:bg-[#0F1419] relative overflow-hidden font-sans transition-colors duration-300">
       {/* Subtle Gradient Background */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#D0E8D4]/20 dark:bg-[#2A4E31]/10 rounded-full blur-[150px] opacity-60"></div>
         <div className="absolute -bottom-40 -left-40 w-[600px] h-[600px] bg-[#C7E6E1]/20 dark:bg-[#25483D]/10 rounded-full blur-[150px] opacity-50"></div>
+      </div>
+
+      {/* Mobile Side Drawer */}
+      <div
+        className={`fixed inset-0 bg-black/30 backdrop-blur-sm z-50 md:hidden transition-opacity duration-300 ${isDrawerOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setIsDrawerOpen(false)}
+      >
+        <div
+          className={`absolute top-0 right-0 w-[80%] max-w-[300px] h-full bg-white dark:bg-[#111722] shadow-xl transition-transform duration-300 ease-in-out ${isDrawerOpen ? 'translate-x-0' : 'translate-x-full'}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="p-6 flex flex-col h-full">
+            <div className="flex justify-between items-center mb-8">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
+                  <Image src="/logo.svg" alt="TrailMate Logo" width={28} height={28} className="relative" />
+                </div>
+                <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">TrailMate</span>
+              </div>
+              <button
+                className="text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors"
+                onClick={() => setIsDrawerOpen(false)}
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="flex flex-col space-y-6 text-lg">
+              <a
+                href="#waitlist"
+                className="nav-link font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 relative group"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollTo('waitlist');
+                }}
+              >
+                Get Early Access
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a
+                href="#features"
+                className="nav-link font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 relative group"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollTo('features');
+                }}
+              >
+                Features
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a
+                href="#contact"
+                className="nav-link font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 relative group"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollTo('contact');
+                }}
+              >
+                Contact Us
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            </div>
+
+            <div className="mt-auto pt-6 border-t border-gray-200 dark:border-gray-700">
+              <ThemeToggle />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Navigation */}
@@ -104,7 +192,9 @@ export default function Home() {
           </div>
           <span className="text-xl font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent tracking-tight">TrailMate</span>
         </div>
-        <div className="flex items-center space-x-8">
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-8">
           <div className="flex space-x-12">
             <a
               href="#waitlist"
@@ -142,6 +232,17 @@ export default function Home() {
           </div>
           <ThemeToggle />
         </div>
+
+        {/* Mobile Menu Button */}
+        <div className="flex items-center gap-4 md:hidden">
+          <ThemeToggle />
+          <button
+            onClick={() => setIsDrawerOpen(true)}
+            className="text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+        </div>
       </nav>
 
       {/* Hero Section with Waitlist */}
@@ -163,17 +264,17 @@ export default function Home() {
           </div>
 
           <div id="waitlist" className="w-full space-y-4 scroll-mt-24">
-            <div className="flex group relative shadow-lg rounded-full">
+            <div className="flex flex-col md:flex-row group relative shadow-lg md:rounded-full">
               <div className="absolute inset-0 bg-gradient-to-r from-[#3A7D44]/20 to-[#5AAE71]/20 dark:from-[#3A7D44]/10 dark:to-[#5AAE71]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <input
                 type="email"
                 placeholder="Enter your email address"
-                className="relative flex-grow px-7 py-5 rounded-full border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/90 dark:bg-gray-800/90 dark:text-white backdrop-blur-sm text-base shadow-sm"
+                className="relative w-full px-7 py-5 rounded-full border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/90 dark:bg-gray-800/90 dark:text-white backdrop-blur-sm text-base shadow-sm"
               />
               <button
-                className="relative bg-[#3A7D44] dark:bg-[#2D6235] text-white font-medium px-8 py-5 rounded-full ml-4 transition-all duration-300 text-base hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 hover:-translate-y-0.5 flex items-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20"
+                className="relative w-full md:w-auto bg-[#3A7D44] dark:bg-[#2D6235] text-white font-medium px-8 py-5 rounded-full mt-4 md:mt-0 md:ml-4 transition-all duration-300 text-base hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 hover:-translate-y-0.5 flex items-center justify-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20"
               >
-                Get Early Access
+                <span className="whitespace-nowrap">Get Early Access</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -199,7 +300,7 @@ export default function Home() {
             />
 
             {/* Launch Badge */}
-            <div className="absolute bottom-10 -right-6 bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
+            <div className="absolute bottom-10 right-40 md:-right-6 bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-[#3A7D44]/10 dark:bg-[#5AAE71]/10 flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-[#3A7D44] dark:text-[#5AAE71]" />
@@ -212,7 +313,7 @@ export default function Home() {
             </div>
 
             {/* Mission Badge */}
-            <div className="absolute -top-4 -left-6 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
+            <div className="absolute -top-4 left-40 md:-left-6 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#5AAE71]/10 dark:bg-[#5AAE71]/10 flex items-center justify-center">
                   <Leaf className="w-5 h-5 text-[#5AAE71] dark:text-[#5AAE71]" />
@@ -342,10 +443,10 @@ export default function Home() {
               <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">TrailMate</span>
             </div>
             <div className="flex flex-col md:flex-row items-center gap-10">
-              <div className="flex space-x-10">
+              <div className="flex flex-wrap justify-center md:justify-start space-x-6 md:space-x-10">
                 <a
                   href="#waitlist"
-                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group"
+                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
                   onClick={(e) => {
                     e.preventDefault();
                     handleScrollTo('waitlist');
@@ -356,7 +457,7 @@ export default function Home() {
                 </a>
                 <a
                   href="#features"
-                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group"
+                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
                   onClick={(e) => {
                     e.preventDefault();
                     handleScrollTo('features');
@@ -367,7 +468,7 @@ export default function Home() {
                 </a>
                 <a
                   href="#contact"
-                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group"
+                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
                   onClick={(e) => {
                     e.preventDefault();
                     handleScrollTo('contact');
