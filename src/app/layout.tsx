@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from '../lib/theme-context';
+import coverImage from '../../public/cover-image.jpg';
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     siteName: "TrailMate",
     images: [
       {
-        url: "/cover-image.jpg", // Add your actual Open Graph image path
+        url: coverImage.src,
         width: 1200,
         height: 630,
         alt: "TrailMate - Sustainable Outdoor Adventures",
