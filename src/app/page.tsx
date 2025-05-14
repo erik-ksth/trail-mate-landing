@@ -2,15 +2,27 @@
 
 import "./globals.css";
 import Image from "next/image";
-import { Leaf, Map, Compass, Backpack, Trophy, ArrowRight, Send, Sparkles, Menu, X, ChevronUp } from "lucide-react";
+import { Leaf, Map, Compass, Backpack, Trophy, ArrowRight, Send, Sparkles, Menu, X, ChevronUp, Check, AlertCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "../components/ThemeToggle";
+import { supabase } from "../lib/supabase";
 
 export default function Home() {
   // Add state for mobile drawer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   // Add state for scroll to top button
   const [showScrollTop, setShowScrollTop] = useState(false);
+  // Add state for email input and form submission
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState<{ message: string; isSuccess: boolean } | null>(null);
+
+  // Add state for contact form
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactFormStatus, setContactFormStatus] = useState<{ message: string; isSuccess: boolean } | null>(null);
+  const [isContactSubmitting, setIsContactSubmitting] = useState(false);
 
   const features = [
     {
@@ -49,6 +61,119 @@ export default function Home() {
       stats: "Coming Soon"
     }
   ];
+
+  // Add function to handle waitlist form submission
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Basic email validation
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setFormStatus({ message: "Please enter a valid email address", isSuccess: false });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFormStatus(null);
+
+    try {
+      // Insert email into Supabase waitlist_users table
+      const { error } = await supabase
+        .from('waitlist_users')
+        .insert([{ email }]);
+
+      if (error) {
+        console.error('Supabase Error:', error);
+
+        if (error.code === '23505') { // Postgres unique constraint error code
+          setFormStatus({ message: "You're already on our waitlist!", isSuccess: true });
+        } else if (error.code === '42P01') {
+          // Table doesn't exist
+          setFormStatus({ message: "Configuration error: Waitlist table not found", isSuccess: false });
+        } else if (error.message.includes('permission denied')) {
+          setFormStatus({ message: "Configuration error: Permission denied", isSuccess: false });
+        } else {
+          setFormStatus({
+            message: `Error: ${error.message || "Something went wrong. Please try again later."}`,
+            isSuccess: false
+          });
+        }
+      } else {
+        setFormStatus({ message: "Thank you for joining our waitlist!", isSuccess: true });
+        setEmail(""); // Clear the input on success
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      setFormStatus({
+        message: err instanceof Error ? `Error: ${err.message}` : "An unexpected error occurred. Please try again.",
+        isSuccess: false
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Add function to handle contact form submission
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Basic validation
+    if (!contactName.trim()) {
+      setContactFormStatus({ message: "Please enter your name", isSuccess: false });
+      return;
+    }
+    if (!contactEmail || !/\S+@\S+\.\S+/.test(contactEmail)) {
+      setContactFormStatus({ message: "Please enter a valid email address", isSuccess: false });
+      return;
+    }
+    if (!contactMessage.trim()) {
+      setContactFormStatus({ message: "Please enter a message", isSuccess: false });
+      return;
+    }
+
+    setIsContactSubmitting(true);
+    setContactFormStatus(null);
+
+    try {
+      // Insert contact data into Supabase contactUs table
+      const { error } = await supabase
+        .from('contactUs')
+        .insert([{
+          name: contactName,
+          email: contactEmail,
+          message: contactMessage
+        }]);
+
+      if (error) {
+        console.error('Supabase Error:', error);
+
+        if (error.code === '42P01') {
+          // Table doesn't exist
+          setContactFormStatus({ message: "Configuration error: Contact table not found", isSuccess: false });
+        } else if (error.message.includes('permission denied')) {
+          setContactFormStatus({ message: "Configuration error: Permission denied", isSuccess: false });
+        } else {
+          setContactFormStatus({
+            message: `Error: ${error.message || "Something went wrong. Please try again later."}`,
+            isSuccess: false
+          });
+        }
+      } else {
+        setContactFormStatus({ message: "Thank you for your message! We'll get back to you soon.", isSuccess: true });
+        // Clear form on success
+        setContactName("");
+        setContactEmail("");
+        setContactMessage("");
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      setContactFormStatus({
+        message: err instanceof Error ? `Error: ${err.message}` : "An unexpected error occurred. Please try again.",
+        isSuccess: false
+      });
+    } finally {
+      setIsContactSubmitting(false);
+    }
+  };
 
   // Handle scroll to top
   const scrollToTop = () => {
@@ -288,24 +413,44 @@ export default function Home() {
             </div>
 
             <div id="waitlist" className="w-full space-y-4 scroll-mt-24">
-              <div className="flex flex-col md:flex-row group relative md:rounded-full">
+              <form onSubmit={handleWaitlistSubmit} className="flex flex-col md:flex-row group relative md:rounded-full">
                 <div className="absolute inset-0 shadow-lg bg-gradient-to-r from-[#3A7D44]/20 to-[#5AAE71]/20 dark:from-[#3A7D44]/10 dark:to-[#5AAE71]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <input
                   type="email"
                   placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="relative w-full px-7 py-5 rounded-full border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/90 dark:bg-gray-800/90 dark:text-white backdrop-blur-sm text-base shadow-sm"
+                  disabled={isSubmitting}
                 />
                 <button
-                  className="relative w-full md:w-auto shadow-lg bg-[#3A7D44] dark:bg-[#2D6235] text-white font-medium px-8 py-5 rounded-full mt-4 md:mt-0 md:ml-4 transition-all duration-300 text-base hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 hover:-translate-y-0.5 flex items-center justify-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="relative w-full md:w-auto shadow-lg bg-[#3A7D44] dark:bg-[#2D6235] text-white font-medium px-8 py-5 rounded-full mt-4 md:mt-0 md:ml-4 transition-all duration-300 text-base hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 hover:-translate-y-0.5 flex items-center justify-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20 disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <span className="whitespace-nowrap">Get Early Access</span>
+                  <span className="whitespace-nowrap">
+                    {isSubmitting ? "Submitting..." : "Get Early Access"}
+                  </span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
-              </div>
-              <p className="text-sm text-[#777777] dark:text-gray-400 flex items-center gap-2 pl-2">
-                <span className="w-2 h-2 rounded-full bg-[#5AAE71] dark:bg-[#5AAE71] animate-pulse"></span>
-                Selected users will receive beta access
-              </p>
+              </form>
+
+              {formStatus && (
+                <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${formStatus.isSuccess ? 'bg-[#3A7D44]/10 text-[#3A7D44] dark:bg-[#3A7D44]/20 dark:text-[#5AAE71]' : 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400'}`}>
+                  {formStatus.isSuccess ?
+                    <Check className="w-4 h-4" /> :
+                    <AlertCircle className="w-4 h-4" />
+                  }
+                  <span className="text-sm font-medium">{formStatus.message}</span>
+                </div>
+              )}
+
+              {!formStatus && (
+                <p className="text-sm text-[#777777] dark:text-gray-400 flex items-center gap-2 pl-2">
+                  <span className="w-2 h-2 rounded-full bg-[#5AAE71] dark:bg-[#5AAE71] animate-pulse"></span>
+                  Selected users will receive beta access
+                </p>
+              )}
             </div>
           </div>
 
@@ -412,7 +557,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <form className="space-y-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-10 rounded-3xl shadow-[0_20px_60px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.3)] border border-[#E5E7EB]/70 dark:border-gray-700/30 relative group fade-in transition-colors duration-300">
+              <form onSubmit={handleContactSubmit} className="space-y-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-10 rounded-3xl shadow-[0_20px_60px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.3)] border border-[#E5E7EB]/70 dark:border-gray-700/30 relative group fade-in transition-colors duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#3A7D44]/5 to-[#5AAE71]/5 dark:from-[#3A7D44]/5 dark:to-[#5AAE71]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                 <div className="relative">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -421,6 +566,8 @@ export default function Home() {
                       <input
                         type="text"
                         placeholder="John Doe"
+                        value={contactName}
+                        onChange={(e) => setContactName(e.target.value)}
                         className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
                       />
                     </div>
@@ -429,6 +576,8 @@ export default function Home() {
                       <input
                         type="email"
                         placeholder="john@example.com"
+                        value={contactEmail}
+                        onChange={(e) => setContactEmail(e.target.value)}
                         className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
                       />
                     </div>
@@ -438,16 +587,34 @@ export default function Home() {
                     <textarea
                       placeholder="Tell us what's on your mind..."
                       rows={4}
+                      value={contactMessage}
+                      onChange={(e) => setContactMessage(e.target.value)}
                       className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
                     ></textarea>
                   </div>
                   <button
                     type="submit"
+                    disabled={isContactSubmitting}
                     className="w-full mt-8 bg-[#3A7D44] dark:bg-[#2D6235] hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] text-white font-medium px-12 py-5 rounded-full transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 transform hover:-translate-y-0.5 inline-flex items-center justify-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20"
                   >
-                    Send Message
+                    <span>
+                      {isContactSubmitting ? "Sending..." : "Send Message"}
+                    </span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </button>
+
+                  {contactFormStatus && (
+                    <div className={`mt-6 flex items-center gap-2 px-4 py-3 rounded-xl ${contactFormStatus.isSuccess
+                      ? 'bg-[#3A7D44]/10 text-[#3A7D44] dark:bg-[#3A7D44]/20 dark:text-[#5AAE71]'
+                      : 'bg-red-100 text-red-600 dark:bg-red-900/20 dark:text-red-400'
+                      }`}>
+                      {contactFormStatus.isSuccess ?
+                        <Check className="w-5 h-5 flex-shrink-0" /> :
+                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                      }
+                      <span className="text-sm font-medium">{contactFormStatus.message}</span>
+                    </div>
+                  )}
                 </div>
               </form>
             </div>
