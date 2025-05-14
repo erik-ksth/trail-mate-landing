@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   authors: [{ name: "TrailMate Team" }],
   creator: "TrailMate",
   publisher: "TrailMate",
-  metadataBase: new URL("https://trytrailmate.netlify.app/"), // Replace with your actual domain
+  metadataBase: new URL("https://trytrailmate.vercel.app/"), // Replace with your actual domain
   alternates: {
     canonical: "/",
   },
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://trytrailmate.netlify.app/", // Replace with your actual domain
+    url: "https://trytrailmate.vercel.app/", // Replace with your actual domain
     title: "TrailMate - Explore Nature Sustainably",
     description: "TrailMate helps you discover eco-friendly trails and plan sustainable outdoor adventures.",
     siteName: "TrailMate",
