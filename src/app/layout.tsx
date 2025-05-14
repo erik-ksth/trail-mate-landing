@@ -3,6 +3,7 @@ import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from '../lib/theme-context';
 import coverImage from '../../public/cover-image.jpg';
+import { Analytics } from "@vercel/analytics/next"
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -71,6 +72,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           {children}
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
