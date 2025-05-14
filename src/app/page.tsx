@@ -2,13 +2,15 @@
 
 import "./globals.css";
 import Image from "next/image";
-import { Leaf, Map, Compass, Backpack, Trophy, ArrowRight, Send, Sparkles, Menu, X } from "lucide-react";
+import { Leaf, Map, Compass, Backpack, Trophy, ArrowRight, Send, Sparkles, Menu, X, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ThemeToggle } from "../components/ThemeToggle";
 
 export default function Home() {
   // Add state for mobile drawer
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  // Add state for scroll to top button
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   const features = [
     {
@@ -47,6 +49,14 @@ export default function Home() {
       stats: "Coming Soon"
     }
   ];
+
+  // Handle scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   // Smooth scroll function
   const handleScrollTo = (elementId: string) => {
@@ -90,7 +100,17 @@ export default function Home() {
       observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    // Track scroll position for scroll-to-top button
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 500);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Lock body scroll when drawer is open
@@ -183,308 +203,323 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="container mx-auto px-6 py-4 flex justify-between items-center sticky top-0 z-50 bg-[#FCFCFC]/90 dark:bg-[#0F1419]/90 backdrop-blur-xl border-b border-[#E5E7EB]/50 dark:border-gray-800/50 transition-colors duration-300">
-        <div className="flex items-center gap-3 hover:scale-105 transition-all duration-300">
-          <div className="relative">
-            <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
-            <Image src="/logo.svg" alt="TrailMate Logo" width={32} height={32} className="relative hover:opacity-90 transition-opacity" />
+      {/* Navigation - changed from sticky to fixed */}
+      <nav className="fixed top-0 left-0 right-0 w-full z-50 bg-[#FCFCFC]/90 dark:bg-[#0F1419]/90 backdrop-blur-xl border-b border-[#E5E7EB]/50 dark:border-gray-800/50 transition-colors duration-300">
+        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-3 hover:scale-105 transition-all duration-300">
+            <div className="relative">
+              <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
+              <Image src="/logo.svg" alt="TrailMate Logo" width={32} height={32} className="relative hover:opacity-90 transition-opacity" />
+            </div>
+            <span className="text-xl font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent tracking-tight">TrailMate</span>
           </div>
-          <span className="text-xl font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent tracking-tight">TrailMate</span>
-        </div>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
-          <div className="flex space-x-12">
-            <a
-              href="#waitlist"
-              className="nav-link text-[15px] font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 hover:scale-105 relative group"
-              onClick={(e) => {
-                e.preventDefault();
-                handleScrollTo('waitlist');
-              }}
-            >
-              Get Early Access
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a
-              href="#features"
-              className="nav-link text-[15px] font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 hover:scale-105 relative group"
-              onClick={(e) => {
-                e.preventDefault();
-                handleScrollTo('features');
-              }}
-            >
-              Features
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
-            </a>
-            <a
-              href="#contact"
-              className="nav-link text-[15px] font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 hover:scale-105 relative group"
-              onClick={(e) => {
-                e.preventDefault();
-                handleScrollTo('contact');
-              }}
-            >
-              Contact Us
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
-            </a>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <div className="flex space-x-12">
+              <a
+                href="#waitlist"
+                className="nav-link text-[15px] font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 hover:scale-105 relative group"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollTo('waitlist');
+                }}
+              >
+                Get Early Access
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a
+                href="#features"
+                className="nav-link text-[15px] font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 hover:scale-105 relative group"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollTo('features');
+                }}
+              >
+                Features
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a
+                href="#contact"
+                className="nav-link text-[15px] font-medium text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-all duration-300 hover:scale-105 relative group"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleScrollTo('contact');
+                }}
+              >
+                Contact Us
+                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            </div>
+            <ThemeToggle />
           </div>
-          <ThemeToggle />
-        </div>
 
-        {/* Mobile Menu Button */}
-        <div className="flex items-center gap-4 md:hidden">
-          <ThemeToggle />
-          <button
-            onClick={() => setIsDrawerOpen(true)}
-            className="text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+          {/* Mobile Menu Button */}
+          <div className="flex items-center gap-4 md:hidden">
+            <ThemeToggle />
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
         </div>
       </nav>
 
-      {/* Hero Section with Waitlist */}
-      <section className="container mx-auto px-6 pt-10 pb-16 md:pt-14 md:pb-20 flex flex-col md:flex-row items-center gap-16 relative">
-        <div className="md:w-1/2 space-y-8 relative z-10 fade-in">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A7D44]/10 dark:bg-[#3A7D44]/20 text-[#3A7D44] dark:text-[#5AAE71] text-sm font-medium backdrop-blur-sm border border-[#3A7D44]/20 dark:border-[#5AAE71]/20">
-            <Sparkles className="w-4 h-4" />
-            <span>Coming Soon - Beta Access Available</span>
-          </div>
-          <div className="space-y-5">
-            <h1 className="text-4xl text-[#1E1E1E] dark:text-white  md:text-6xl font-bold leading-tight tracking-tight">
-              <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Explore Nature</span>
-              <br />
-              <span className="text-[#3A7D44] dark:text-[#5AAE71]">Sustainably</span> with TrailMate
-            </h1>
-            <p className="text-lg text-[#555555] dark:text-gray-300 leading-relaxed max-w-xl tracking-wide">
-              Be among the first to experience the next generation of eco-friendly trail exploration. Help shape the future of sustainable outdoor adventures.
-            </p>
-          </div>
-
-          <div id="waitlist" className="w-full space-y-4 scroll-mt-24">
-            <div className="flex flex-col md:flex-row group relative shadow-lg md:rounded-full">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#3A7D44]/20 to-[#5AAE71]/20 dark:from-[#3A7D44]/10 dark:to-[#5AAE71]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="relative w-full px-7 py-5 rounded-full border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/90 dark:bg-gray-800/90 dark:text-white backdrop-blur-sm text-base shadow-sm"
-              />
-              <button
-                className="relative w-full md:w-auto bg-[#3A7D44] dark:bg-[#2D6235] text-white font-medium px-8 py-5 rounded-full mt-4 md:mt-0 md:ml-4 transition-all duration-300 text-base hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 hover:-translate-y-0.5 flex items-center justify-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20"
-              >
-                <span className="whitespace-nowrap">Get Early Access</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-            <p className="text-sm text-[#777777] dark:text-gray-400 flex items-center gap-2 pl-2">
-              <span className="w-2 h-2 rounded-full bg-[#5AAE71] dark:bg-[#5AAE71] animate-pulse"></span>
-              Selected users will receive beta access
-            </p>
-          </div>
-        </div>
-
-        <div className="md:w-1/2 flex justify-center relative fade-in">
-          <div className="absolute -inset-10 bg-gradient-to-br from-[#3A7D44]/5 via-[#5AAE71]/5 to-[#E3F4F1]/10 dark:from-[#3A7D44]/5 dark:via-[#5AAE71]/5 dark:to-[#25483D]/5 rounded-full blur-3xl opacity-70"></div>
-          <div className="relative w-[700px] h-[800px] transform hover:scale-[1.02] transition-all duration-700 ease-in-out">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#3A7D44]/10 to-[#5AAE71]/10 dark:from-[#3A7D44]/5 dark:to-[#5AAE71]/5 rounded-3xl blur-2xl"></div>
-            <Image
-              src="/heroImg.png"
-              alt="TrailMate App Screenshot"
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              style={{ objectFit: 'contain' }}
-              priority
-              className="relative drop-shadow-2xl dark:brightness-90"
-            />
-
-            {/* Launch Badge */}
-            <div className="absolute bottom-10 right-40 md:-right-6 bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-[#3A7D44]/10 dark:bg-[#5AAE71]/10 flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-[#3A7D44] dark:text-[#5AAE71]" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-[#555555] dark:text-gray-300">Launch Status</p>
-                  <p className="text-xl font-bold text-[#3A7D44] dark:text-[#5AAE71]">Beta Access Soon</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Mission Badge */}
-            <div className="absolute -top-4 left-40 md:-left-6 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#5AAE71]/10 dark:bg-[#5AAE71]/10 flex items-center justify-center">
-                  <Leaf className="w-5 h-5 text-[#5AAE71] dark:text-[#5AAE71]" />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-[#555555] dark:text-gray-300">Our Mission</p>
-                  <p className="text-lg font-bold text-[#5AAE71] dark:text-[#5AAE71]">Eco-Friendly Trails</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-32 relative scroll-mt-24">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FCFCFC] to-[#F7F9F8] dark:from-[#0F1419] dark:to-[#111722] transition-colors duration-300"></div>
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-20 space-y-5 fade-in">
+      {/* Add padding to body to offset fixed navbar */}
+      <div className="pt-[72px]">
+        {/* Hero Section with Waitlist */}
+        <section className="container mx-auto px-6 pt-10 pb-16 md:pt-14 md:pb-20 flex flex-col md:flex-row items-center gap-16 relative">
+          <div className="md:w-1/2 space-y-8 relative z-10 fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A7D44]/10 dark:bg-[#3A7D44]/20 text-[#3A7D44] dark:text-[#5AAE71] text-sm font-medium backdrop-blur-sm border border-[#3A7D44]/20 dark:border-[#5AAE71]/20">
-              <Leaf className="w-4 h-4" />
-              <span>Planned Features</span>
+              <Sparkles className="w-4 h-4" />
+              <span>Coming Soon - Beta Access Available</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-              <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Features that will make a difference</span>
-            </h2>
-            <p className="text-lg text-[#555555] dark:text-gray-300 max-w-2xl mx-auto">
-              Here&apos;s what we&apos;re building - a platform that combines technology with environmental consciousness to enhance your outdoor adventures
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className={`bg-gradient-to-br ${feature.gradient} p-8 rounded-3xl shadow-[0_10px_40px_rgba(58,125,68,0.06)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all duration-500 transform hover:-translate-y-2 border border-[#E5E7EB]/50 dark:border-gray-700/30 relative group fade-in`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-white/50 dark:from-white/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative">
-                  <div className="w-14 h-14 bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center text-[#3A7D44] dark:text-[#5AAE71] mb-7 shadow-sm group-hover:shadow-md transition-shadow group-hover:scale-105 transition-transform duration-500">
-                    {feature.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold mb-4 text-[#1E1E1E] dark:text-white tracking-tight">{feature.title}</h3>
-                  <p className="text-[#555555] dark:text-gray-300 leading-relaxed mb-6">{feature.description}</p>
-                  <div className="flex items-center gap-2 text-[#3A7D44] dark:text-[#5AAE71] font-medium">
-                    <span>{feature.stats}</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-32 relative scroll-mt-24">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F7F9F8] to-[#FCFCFC] dark:from-[#111722] dark:to-[#0F1419] transition-colors duration-300"></div>
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-16 space-y-5 fade-in">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A7D44]/10 dark:bg-[#3A7D44]/20 text-[#3A7D44] dark:text-[#5AAE71] text-sm font-medium backdrop-blur-sm border border-[#3A7D44]/20 dark:border-[#5AAE71]/20">
-                <Send className="w-4 h-4" />
-                <span>Get in Touch</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Let&apos;s Connect</span>
-              </h2>
-              <p className="text-lg text-[#555555] dark:text-gray-300">
-                Have questions about TrailMate? We&apos;d love to hear from you.
+            <div className="space-y-5">
+              <h1 className="text-4xl text-[#1E1E1E] dark:text-white  md:text-6xl font-bold leading-tight tracking-tight">
+                <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Explore Nature</span>
+                <br />
+                <span className="text-[#3A7D44] dark:text-[#5AAE71]">Sustainably</span> with TrailMate
+              </h1>
+              <p className="text-lg text-[#555555] dark:text-gray-300 leading-relaxed max-w-xl tracking-wide">
+                Be among the first to experience the next generation of eco-friendly trail exploration. Help shape the future of sustainable outdoor adventures.
               </p>
             </div>
 
-            <form className="space-y-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-10 rounded-3xl shadow-[0_20px_60px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.3)] border border-[#E5E7EB]/70 dark:border-gray-700/30 relative group fade-in transition-colors duration-300">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#3A7D44]/5 to-[#5AAE71]/5 dark:from-[#3A7D44]/5 dark:to-[#5AAE71]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-              <div className="relative">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[#555555] dark:text-gray-300">Your Name</label>
-                    <input
-                      type="text"
-                      placeholder="John Doe"
-                      className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-[#555555] dark:text-gray-300">Your Email</label>
-                    <input
-                      type="email"
-                      placeholder="john@example.com"
-                      className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2 mt-6">
-                  <label className="text-sm font-medium text-[#555555] dark:text-gray-300">Your Message</label>
-                  <textarea
-                    placeholder="Tell us what's on your mind..."
-                    rows={4}
-                    className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
-                  ></textarea>
-                </div>
+            <div id="waitlist" className="w-full space-y-4 scroll-mt-24">
+              <div className="flex flex-col md:flex-row group relative md:rounded-full">
+                <div className="absolute inset-0 shadow-lg bg-gradient-to-r from-[#3A7D44]/20 to-[#5AAE71]/20 dark:from-[#3A7D44]/10 dark:to-[#5AAE71]/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <input
+                  type="email"
+                  placeholder="Enter your email address"
+                  className="relative w-full px-7 py-5 rounded-full border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/90 dark:bg-gray-800/90 dark:text-white backdrop-blur-sm text-base shadow-sm"
+                />
                 <button
-                  type="submit"
-                  className="w-full mt-8 bg-[#3A7D44] dark:bg-[#2D6235] hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] text-white font-medium px-12 py-5 rounded-full transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 transform hover:-translate-y-0.5 inline-flex items-center justify-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20"
+                  className="relative w-full md:w-auto shadow-lg bg-[#3A7D44] dark:bg-[#2D6235] text-white font-medium px-8 py-5 rounded-full mt-4 md:mt-0 md:ml-4 transition-all duration-300 text-base hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 hover:-translate-y-0.5 flex items-center justify-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20"
                 >
-                  Send Message
+                  <span className="whitespace-nowrap">Get Early Access</span>
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
-            </form>
+              <p className="text-sm text-[#777777] dark:text-gray-400 flex items-center gap-2 pl-2">
+                <span className="w-2 h-2 rounded-full bg-[#5AAE71] dark:bg-[#5AAE71] animate-pulse"></span>
+                Selected users will receive beta access
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Footer */}
-      <footer className="py-14 bg-white dark:bg-[#0F1419] border-t border-[#E5E7EB]/50 dark:border-gray-800/50 relative transition-colors duration-300">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FCFCFC] to-white dark:from-[#0F1419] dark:to-[#0A0E14] transition-colors duration-300"></div>
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
-                <Image src="/logo.svg" alt="TrailMate Logo" width={24} height={24} className="relative" />
+          <div className="md:w-1/2 flex justify-center relative fade-in">
+            <div className="absolute -inset-10 bg-gradient-to-br from-[#3A7D44]/5 via-[#5AAE71]/5 to-[#E3F4F1]/10 dark:from-[#3A7D44]/5 dark:via-[#5AAE71]/5 dark:to-[#25483D]/5 rounded-full blur-3xl opacity-70"></div>
+            <div className="relative w-[700px] h-[800px] transform hover:scale-[1.02] transition-all duration-700 ease-in-out">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#3A7D44]/10 to-[#5AAE71]/10 dark:from-[#3A7D44]/5 dark:to-[#5AAE71]/5 rounded-3xl blur-2xl"></div>
+              <Image
+                src="/heroImg.png"
+                alt="TrailMate App Screenshot"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectFit: 'contain' }}
+                priority
+                className="relative drop-shadow-2xl dark:brightness-90"
+              />
+
+              {/* Launch Badge */}
+              <div className="absolute bottom-10 right-40 md:-right-6 bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-[#3A7D44]/10 dark:bg-[#5AAE71]/10 flex items-center justify-center">
+                    <Sparkles className="w-6 h-6 text-[#3A7D44] dark:text-[#5AAE71]" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-[#555555] dark:text-gray-300">Launch Status</p>
+                    <p className="text-xl font-bold text-[#3A7D44] dark:text-[#5AAE71]">Beta Access Soon</p>
+                  </div>
+                </div>
               </div>
-              <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">TrailMate</span>
-            </div>
-            <div className="flex flex-col md:flex-row items-center gap-10">
-              <div className="flex flex-wrap justify-center md:justify-start space-x-6 md:space-x-10">
-                <a
-                  href="#waitlist"
-                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleScrollTo('waitlist');
-                  }}
-                >
-                  Get Early Access
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a
-                  href="#features"
-                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleScrollTo('features');
-                  }}
-                >
-                  Features
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a
-                  href="#contact"
-                  className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleScrollTo('contact');
-                  }}
-                >
-                  Contact
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
-                </a>
-              </div>
-              <div className="text-[#777777] dark:text-gray-500 text-sm">
-                © 2025 TrailMate. All rights reserved.
+
+              {/* Mission Badge */}
+              <div className="absolute -top-4 left-40 md:-left-6 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#5AAE71]/10 dark:bg-[#5AAE71]/10 flex items-center justify-center">
+                    <Leaf className="w-5 h-5 text-[#5AAE71] dark:text-[#5AAE71]" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-[#555555] dark:text-gray-300">Our Mission</p>
+                    <p className="text-lg font-bold text-[#5AAE71] dark:text-[#5AAE71]">Eco-Friendly Trails</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </section>
+
+        {/* Features Section */}
+        <section id="features" className="py-32 relative scroll-mt-24">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FCFCFC] to-[#F7F9F8] dark:from-[#0F1419] dark:to-[#111722] transition-colors duration-300"></div>
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="text-center mb-20 space-y-5 fade-in">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A7D44]/10 dark:bg-[#3A7D44]/20 text-[#3A7D44] dark:text-[#5AAE71] text-sm font-medium backdrop-blur-sm border border-[#3A7D44]/20 dark:border-[#5AAE71]/20">
+                <Leaf className="w-4 h-4" />
+                <span>Planned Features</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+                <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Features that will make a difference</span>
+              </h2>
+              <p className="text-lg text-[#555555] dark:text-gray-300 max-w-2xl mx-auto">
+                Here&apos;s what we&apos;re building - a platform that combines technology with environmental consciousness to enhance your outdoor adventures
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  className={`bg-gradient-to-br ${feature.gradient} p-8 rounded-3xl shadow-[0_10px_40px_rgba(58,125,68,0.06)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.2)] hover:shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] transition-all duration-500 transform hover:-translate-y-2 border border-[#E5E7EB]/50 dark:border-gray-700/30 relative group fade-in`}
+                  style={{ transitionDelay: `${index * 100}ms` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/50 dark:from-white/5 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative">
+                    <div className="w-14 h-14 bg-white dark:bg-gray-800 rounded-2xl flex items-center justify-center text-[#3A7D44] dark:text-[#5AAE71] mb-7 shadow-sm group-hover:shadow-md transition-shadow group-hover:scale-105 transition-transform duration-500">
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-4 text-[#1E1E1E] dark:text-white tracking-tight">{feature.title}</h3>
+                    <p className="text-[#555555] dark:text-gray-300 leading-relaxed mb-6">{feature.description}</p>
+                    <div className="flex items-center gap-2 text-[#3A7D44] dark:text-[#5AAE71] font-medium">
+                      <span>{feature.stats}</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="py-32 relative scroll-mt-24">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#F7F9F8] to-[#FCFCFC] dark:from-[#111722] dark:to-[#0F1419] transition-colors duration-300"></div>
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="max-w-3xl mx-auto">
+              <div className="text-center mb-16 space-y-5 fade-in">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A7D44]/10 dark:bg-[#3A7D44]/20 text-[#3A7D44] dark:text-[#5AAE71] text-sm font-medium backdrop-blur-sm border border-[#3A7D44]/20 dark:border-[#5AAE71]/20">
+                  <Send className="w-4 h-4" />
+                  <span>Get in Touch</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+                  <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Let&apos;s Connect</span>
+                </h2>
+                <p className="text-lg text-[#555555] dark:text-gray-300">
+                  Have questions about TrailMate? We&apos;d love to hear from you.
+                </p>
+              </div>
+
+              <form className="space-y-6 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md p-10 rounded-3xl shadow-[0_20px_60px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.3)] border border-[#E5E7EB]/70 dark:border-gray-700/30 relative group fade-in transition-colors duration-300">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#3A7D44]/5 to-[#5AAE71]/5 dark:from-[#3A7D44]/5 dark:to-[#5AAE71]/5 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div className="relative">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-[#555555] dark:text-gray-300">Your Name</label>
+                      <input
+                        type="text"
+                        placeholder="John Doe"
+                        className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-[#555555] dark:text-gray-300">Your Email</label>
+                      <input
+                        type="email"
+                        placeholder="john@example.com"
+                        className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2 mt-6">
+                    <label className="text-sm font-medium text-[#555555] dark:text-gray-300">Your Message</label>
+                    <textarea
+                      placeholder="Tell us what's on your mind..."
+                      rows={4}
+                      className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full mt-8 bg-[#3A7D44] dark:bg-[#2D6235] hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] text-white font-medium px-12 py-5 rounded-full transition-all duration-300 shadow-sm hover:shadow-lg hover:shadow-[#3A7D44]/20 dark:hover:shadow-[#5AAE71]/20 transform hover:-translate-y-0.5 inline-flex items-center justify-center gap-2 group-hover:shadow-[#3A7D44]/20 dark:group-hover:shadow-[#5AAE71]/20"
+                  >
+                    Send Message
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="py-14 bg-white dark:bg-[#0F1419] border-t border-[#E5E7EB]/50 dark:border-gray-800/50 relative transition-colors duration-300">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#FCFCFC] to-white dark:from-[#0F1419] dark:to-[#0A0E14] transition-colors duration-300"></div>
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
+                  <Image src="/logo.svg" alt="TrailMate Logo" width={24} height={24} className="relative" />
+                </div>
+                <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">TrailMate</span>
+              </div>
+              <div className="flex flex-col md:flex-row items-center gap-10">
+                <div className="flex flex-wrap justify-center md:justify-start space-x-6 md:space-x-10">
+                  <a
+                    href="#waitlist"
+                    className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScrollTo('waitlist');
+                    }}
+                  >
+                    Get Early Access
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+                  </a>
+                  <a
+                    href="#features"
+                    className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScrollTo('features');
+                    }}
+                  >
+                    Features
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+                  </a>
+                  <a
+                    href="#contact"
+                    className="nav-link text-[#555555] dark:text-gray-400 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors relative group py-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleScrollTo('contact');
+                    }}
+                  >
+                    Contact
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#3A7D44] dark:bg-[#5AAE71] transition-all duration-300 group-hover:w-full"></span>
+                  </a>
+                </div>
+                <div className="text-[#777777] dark:text-gray-500 text-sm">
+                  © 2025 TrailMate. All rights reserved.
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      {/* Scroll to top button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-8 right-8 p-3 rounded-full bg-[#3A7D44] dark:bg-[#2D6235] text-white shadow-lg hover:bg-[#2D6235] dark:hover:bg-[#3A7D44] transform hover:-translate-y-1 transition-all duration-300 z-50 ${showScrollTop ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'
+          }`}
+        aria-label="Scroll to top"
+      >
+        <ChevronUp className="w-5 h-5" />
+      </button>
 
       {/* CSS for animations */}
       <style jsx global>{`
