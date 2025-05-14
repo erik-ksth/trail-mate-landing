@@ -407,7 +407,7 @@ export default function Home() {
                   placeholder="Enter your email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="relative w-full px-7 py-5 rounded-full border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/90 dark:bg-gray-800/90 dark:text-white backdrop-blur-sm text-base shadow-sm"
+                  className="relative w-full px-7 py-5 rounded-full border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/90 dark:bg-gray-800/90 text-black dark:text-white backdrop-blur-sm text-base shadow-sm"
                   disabled={isSubmitting}
                 />
                 <button
@@ -555,7 +555,7 @@ export default function Home() {
                         placeholder="John Doe"
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
-                        className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
+                        className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 text-black dark:text-white backdrop-blur-sm"
                       />
                     </div>
                     <div className="space-y-2">
@@ -565,7 +565,7 @@ export default function Home() {
                         placeholder="john@example.com"
                         value={contactEmail}
                         onChange={(e) => setContactEmail(e.target.value)}
-                        className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
+                        className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 text-black dark:text-white backdrop-blur-sm"
                       />
                     </div>
                   </div>
@@ -576,7 +576,7 @@ export default function Home() {
                       rows={4}
                       value={contactMessage}
                       onChange={(e) => setContactMessage(e.target.value)}
-                      className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 dark:text-white backdrop-blur-sm"
+                      className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 text-black dark:text-white backdrop-blur-sm"
                     ></textarea>
                   </div>
                   <button
