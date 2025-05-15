@@ -1,4 +1,4 @@
-![Explore Nature Sustainably with TrailMate](/public/cover-image.jpg)
+![Explore Nature Sustainably with TrailMate](/public/cover-image.png)
 
 # TrailMate
 
