@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from '../lib/theme-context';
-import coverImage from '../../public/cover-image.jpg';
+import coverImage from '../../public/cover-image.png';
 import { Analytics } from "@vercel/analytics/next"
 
 const montserrat = Montserrat({

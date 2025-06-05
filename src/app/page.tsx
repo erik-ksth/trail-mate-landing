@@ -27,36 +27,29 @@ export default function Home() {
   const features = [
     {
       icon: <Map className="w-7 h-7" />,
-      title: "Smart TrailFinder",
-      description: "Discover personalized trails based on your preferences, difficulty level, and environmental impact.",
+      title: "Campsite Finder",
+      description: "Discover perfect camping spots with detailed site information, amenities, and real camper reviews.",
       gradient: "from-[#E9F2E5] to-[#F2F9EF] dark:from-[#1E2A1C] dark:to-[#1A261F]",
       stats: "Coming Soon"
     },
     {
       icon: <Compass className="w-7 h-7" />,
-      title: "AI Trail Assistant",
-      description: "Get real-time guidance and essential survival tips about local ecosystems during your adventure.",
-      gradient: "from-[#E3F4F1] to-[#EDF8F6] dark:from-[#1A2826] dark:to-[#1A2420]",
-      stats: "Coming Soon"
-    },
-    {
-      icon: <Leaf className="w-7 h-7" />,
       title: "Trip Planner",
-      description: "Plan your outdoor adventure with weather-aware routing, viewpoints, and sustainable campsite options.",
-      gradient: "from-[#E5F5EB] to-[#F0FAF5] dark:from-[#1A2820] dark:to-[#1A2622]",
+      description: "Plan your camping trips with weather forecasts, route planning, and customizable itineraries.",
+      gradient: "from-[#E2F4E8] to-[#EDF9F1] dark:from-[#1A2820] dark:to-[#1A2622]",
       stats: "Coming Soon"
     },
     {
       icon: <Backpack className="w-7 h-7" />,
-      title: "Smart Eco Packing",
-      description: "Receive minimalist packing lists with environmentally friendly alternatives for your journey.",
-      gradient: "from-[#E9F2E5] to-[#F2F9EF] dark:from-[#1E2A1C] dark:to-[#1A261F]",
+      title: "Gear Manager",
+      description: "Organize your camping gear with smart packing lists and equipment maintenance reminders.",
+      gradient: "from-[#E5F5EB] to-[#F0FAF5] dark:from-[#1C2A22] dark:to-[#1A2624]",
       stats: "Coming Soon"
     },
     {
       icon: <Trophy className="w-7 h-7" />,
-      title: "Eco Missions",
-      description: "Complete environmental challenges, earn rewards, and track your positive impact on nature.",
+      title: "Camping Guide",
+      description: "Access comprehensive camping guides, tips, and tutorials for campers of all experience levels.",
       gradient: "from-[#E3F4F1] to-[#EDF8F6] dark:from-[#1A2826] dark:to-[#1A2420]",
       stats: "Coming Soon"
     }
@@ -262,7 +255,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
                   <Image src="/logo.svg" alt="TrailMate Logo" width={28} height={28} className="relative" />
                 </div>
-                <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">TrailMate</span>
+                <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Trekteria</span>
               </div>
               <button
                 className="text-[#333333] dark:text-gray-200 hover:text-[#3A7D44] dark:hover:text-[#5AAE71] transition-colors"
@@ -323,7 +316,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
               <Image src="/logo.svg" alt="TrailMate Logo" width={32} height={32} className="relative hover:opacity-90 transition-opacity" />
             </div>
-            <span className="text-xl font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent tracking-tight">TrailMate</span>
+            <span className="text-xl font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent tracking-tight">Trekteria</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -386,16 +379,16 @@ export default function Home() {
           <div className="md:w-1/2 space-y-8 relative z-10 fade-in">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A7D44]/10 dark:bg-[#3A7D44]/20 text-[#3A7D44] dark:text-[#5AAE71] text-sm font-medium backdrop-blur-sm border border-[#3A7D44]/20 dark:border-[#5AAE71]/20">
               <Sparkles className="w-4 h-4" />
-              <span>Coming Soon - Beta Access Available</span>
+              <span>Your Ultimate Camping Companion</span>
             </div>
             <div className="space-y-5">
               <h1 className="text-4xl text-[#1E1E1E] dark:text-white  md:text-6xl font-bold leading-tight tracking-tight">
-                <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Explore Nature</span>
+                <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Plan Your Perfect</span>
                 <br />
-                <span className="text-[#3A7D44] dark:text-[#5AAE71]">Sustainably</span> with TrailMate
+                <span className="text-[#3A7D44] dark:text-[#5AAE71]">Camping Adventure</span> with Trekteria
               </h1>
               <p className="text-lg text-[#555555] dark:text-gray-300 leading-relaxed max-w-xl tracking-wide">
-                Be among the first to experience the next generation of eco-friendly trail exploration. Help shape the future of sustainable outdoor adventures.
+                Experience hassle-free camping planning with our all-in-one platform. From site selection to gear organization, we&apos;ve got you covered.
               </p>
             </div>
 
@@ -462,8 +455,8 @@ export default function Home() {
                     <Sparkles className="w-6 h-6 text-[#3A7D44] dark:text-[#5AAE71]" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-[#555555] dark:text-gray-300">Launch Status</p>
-                    <p className="text-xl font-bold text-[#3A7D44] dark:text-[#5AAE71]">Beta Access Soon</p>
+                    <p className="text-sm font-medium text-[#555555] dark:text-gray-300">App Status</p>
+                    <p className="text-xl font-bold text-[#3A7D44] dark:text-[#5AAE71]">Early Access</p>
                   </div>
                 </div>
               </div>
@@ -472,11 +465,11 @@ export default function Home() {
               <div className="absolute -top-4 left-40 md:-left-6 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-[0_20px_50px_rgba(58,125,68,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-[#E5E7EB] dark:border-gray-700 backdrop-blur-sm transition-colors duration-300">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-[#5AAE71]/10 dark:bg-[#5AAE71]/10 flex items-center justify-center">
-                    <Leaf className="w-5 h-5 text-[#5AAE71] dark:text-[#5AAE71]" />
+                    <Backpack className="w-5 h-5 text-[#5AAE71] dark:text-[#5AAE71]" />
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-[#555555] dark:text-gray-300">Our Mission</p>
-                    <p className="text-lg font-bold text-[#5AAE71] dark:text-[#5AAE71]">Eco-Friendly Trails</p>
+                    <p className="text-xs font-medium text-[#555555] dark:text-gray-300">Our Focus</p>
+                    <p className="text-lg font-bold text-[#5AAE71] dark:text-[#5AAE71]">Smart Camping</p>
                   </div>
                 </div>
               </div>
@@ -491,17 +484,17 @@ export default function Home() {
             <div className="text-center mb-20 space-y-5 fade-in">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#3A7D44]/10 dark:bg-[#3A7D44]/20 text-[#3A7D44] dark:text-[#5AAE71] text-sm font-medium backdrop-blur-sm border border-[#3A7D44]/20 dark:border-[#5AAE71]/20">
                 <Leaf className="w-4 h-4" />
-                <span>Planned Features</span>
+                <span>Smart Features</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Features that will make a difference</span>
+                <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Everything you need for the perfect camping trip</span>
               </h2>
               <p className="text-lg text-[#555555] dark:text-gray-300 max-w-2xl mx-auto">
-                Here&apos;s what we&apos;re building - a platform that combines technology with environmental consciousness to enhance your outdoor adventures
+                From finding the ideal campsite to managing your gear, we&apos;ve built tools that make camping planning simple and enjoyable
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {features.map((feature, index) => (
                 <div
                   key={index}
@@ -540,7 +533,7 @@ export default function Home() {
                   <span className="bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Let&apos;s Connect</span>
                 </h2>
                 <p className="text-lg text-[#555555] dark:text-gray-300">
-                  Have questions about TrailMate? We&apos;d love to hear from you.
+                  Have questions about Trekteria? We&apos;d love to hear from you.
                 </p>
               </div>
 
@@ -552,7 +545,7 @@ export default function Home() {
                       <label className="text-sm font-medium text-[#555555] dark:text-gray-300">Your Name</label>
                       <input
                         type="text"
-                        placeholder="John Doe"
+                        placeholder=""
                         value={contactName}
                         onChange={(e) => setContactName(e.target.value)}
                         className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 text-black dark:text-white backdrop-blur-sm"
@@ -562,7 +555,7 @@ export default function Home() {
                       <label className="text-sm font-medium text-[#555555] dark:text-gray-300">Your Email</label>
                       <input
                         type="email"
-                        placeholder="john@example.com"
+                        placeholder=""
                         value={contactEmail}
                         onChange={(e) => setContactEmail(e.target.value)}
                         className="w-full px-6 py-4 rounded-xl border border-[#E5E7EB] dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#3A7D44]/30 dark:focus:ring-[#5AAE71]/30 focus:border-[#3A7D44]/50 dark:focus:border-[#5AAE71]/50 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 text-black dark:text-white backdrop-blur-sm"
@@ -618,7 +611,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
                   <Image src="/logo.svg" alt="TrailMate Logo" width={24} height={24} className="relative" />
                 </div>
-                <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">TrailMate</span>
+                <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Trekteria</span>
               </div>
               <div className="flex flex-col md:flex-row items-center gap-10">
                 <div className="flex flex-wrap justify-center md:justify-start space-x-6 md:space-x-10">
@@ -657,7 +650,7 @@ export default function Home() {
                   </a>
                 </div>
                 <div className="text-[#777777] dark:text-gray-500 text-sm">
-                  © 2025 TrailMate. All rights reserved.
+                  © 2025 Trekteria. All rights reserved.
                 </div>
               </div>
             </div>
