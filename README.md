@@ -1,6 +1,6 @@
-![Explore Nature Sustainably with TrailMate](/public/cover-image.png)
+![Explore Nature Sustainably with Trekteria](/public/cover-image.png)
 
-# TrailMate
+# Trekteria
 
 A modern web application for outdoor enthusiasts to discover, track, and share their hiking adventures.
 
@@ -28,7 +28,7 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 - Discover hiking trails in your area
 - Track your hiking progress and achievements
-- Share your adventures with the TrailMate community
+- Share your adventures with the Trekteria community
 - Plan trips and save favorite destinations
 
 ## Technology Stack
@@ -46,6 +46,6 @@ To learn more about the technologies used in this project:
 
 ## Deployment
 
-TrailMate is already deployed and live on [Vercel](https://vercel.com). You can visit the site at [trytrailmate.vercel.app](https://trytrailmate.vercel.app).
+Trekteria is already deployed and live on [Vercel](https://vercel.com). You can visit the site at [www.trekeria.com](https://www.trekteria.com/).
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for details on customizing your deployment.

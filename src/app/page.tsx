@@ -253,7 +253,7 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
-                  <Image src="/logo.svg" alt="TrailMate Logo" width={28} height={28} className="relative" />
+                  <Image src="/logo.svg" alt="Trekteria Logo" width={28} height={28} className="relative" />
                 </div>
                 <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Trekteria</span>
               </div>
@@ -314,7 +314,7 @@ export default function Home() {
           <div className="flex items-center gap-3 hover:scale-105 transition-all duration-300">
             <div className="relative">
               <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
-              <Image src="/logo.svg" alt="TrailMate Logo" width={32} height={32} className="relative hover:opacity-90 transition-opacity" />
+              <Image src="/logo.svg" alt="Trekteria Logo" width={32} height={32} className="relative hover:opacity-90 transition-opacity" />
             </div>
             <span className="text-xl font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent tracking-tight">Trekteria</span>
           </div>
@@ -440,7 +440,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-br from-[#3A7D44]/10 to-[#5AAE71]/10 dark:from-[#3A7D44]/5 dark:to-[#5AAE71]/5 rounded-3xl blur-2xl"></div>
               <Image
                 src="/heroImg.png"
-                alt="TrailMate App Screenshot"
+                alt="Trekteria App Screenshot"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 style={{ objectFit: 'contain' }}
@@ -609,7 +609,7 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <div className="relative">
                   <div className="absolute inset-0 bg-[#3A7D44]/20 dark:bg-[#5AAE71]/20 rounded-full blur-md"></div>
-                  <Image src="/logo.svg" alt="TrailMate Logo" width={24} height={24} className="relative" />
+                  <Image src="/logo.svg" alt="Trekteria Logo" width={24} height={24} className="relative" />
                 </div>
                 <span className="text-lg font-semibold bg-gradient-to-r from-[#1E1E1E] to-[#3A7D44] dark:from-white dark:to-[#5AAE71] bg-clip-text text-transparent">Trekteria</span>
               </div>

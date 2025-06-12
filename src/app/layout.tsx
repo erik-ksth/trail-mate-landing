@@ -16,13 +16,13 @@ const openSans = Open_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "TrailMate - Explore Nature Sustainably",
-  description: "TrailMate helps you discover eco-friendly trails and plan sustainable outdoor adventures.",
+  title: "Trekteria - Explore Nature Sustainably",
+  description: "Trekteria helps you discover eco-friendly trails and plan sustainable outdoor adventures.",
   keywords: ["hiking", "trails", "outdoor activities", "eco-friendly", "sustainable travel", "nature", "adventure", "outdoor exploration"],
-  authors: [{ name: "TrailMate Team" }],
-  creator: "TrailMate",
-  publisher: "TrailMate",
-  metadataBase: new URL("https://trytrailmate.vercel.app/"), // Replace with your actual domain
+  authors: [{ name: "Trekteria Team" }],
+  creator: "Trekteria",
+  publisher: "Trekteria",
+  metadataBase: new URL("https://www.trekteria.com/"), // Replace with your actual domain
   alternates: {
     canonical: "/",
   },
@@ -40,16 +40,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://trytrailmate.vercel.app/", // Replace with your actual domain
-    title: "TrailMate - Explore Nature Sustainably",
-    description: "TrailMate helps you discover eco-friendly trails and plan sustainable outdoor adventures.",
-    siteName: "TrailMate",
+    url: "https://www.trekteria.com/", // Replace with your actual domain
+    title: "Trekteria - Explore Nature Sustainably",
+    description: "Trekteria helps you discover eco-friendly trails and plan sustainable outdoor adventures.",
+    siteName: "Trekteria",
     images: [
       {
         url: coverImage.src,
         width: 1200,
         height: 630,
-        alt: "TrailMate - Sustainable Outdoor Adventures",
+        alt: "Trekteria - Sustainable Outdoor Adventures",
       },
     ],
   },
